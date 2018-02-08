@@ -8,7 +8,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by LinJie on 2014/10/24.
+ * Created by  on 2014/10/24.
  */
  @Target( {  FIELD ,PARAMETER})
  @Retention(RUNTIME)

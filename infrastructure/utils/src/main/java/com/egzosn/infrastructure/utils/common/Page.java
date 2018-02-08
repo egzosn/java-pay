@@ -16,6 +16,8 @@ public class Page<T> {
 	private int rows = 10; // 每页记录数
 	
 	private int count = 1; // 页数
+
+	private int pages = 1; // 页数
 	
 	private long total = 0; // 所有记录数
 	
@@ -103,6 +105,16 @@ public class Page<T> {
 		}
 	}
 
+	public int getPages() {
+		return pages;
+	}
+
+	public void setPages() {
+		if (total >  0) {
+			this.count = (int)  Math.ceil((float)total / rows );
+		}
+	}
+
 	/**
 	 * 获取任一页第一条数据在数据集的位置.
 	 *
@@ -124,6 +136,7 @@ public class Page<T> {
 		this.total = total;
 		this.content = content;
 		setCount();
+		setPages();
 	}
 
 }

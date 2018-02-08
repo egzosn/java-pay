@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author egan.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package com.egzosn.infrastructure.database.utils;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -27,19 +25,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.egzosn.infrastructure.database.utils.FieldToMethod.GET_PREFIX;
+import static com.egzosn.infrastructure.database.utils.FieldToMethod.SET_PREFIX;
+import static com.egzosn.infrastructure.database.utils.FieldToMethod.capitalize;
+
 /**
  * 反射工具类.
  *
  * @author vincent
  */
 
-@SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class ReflectionUtils {
 
     public static final String CGLIB_CLASS_SEPARATOR = "$$";
 
-    private static Logger logger = LoggerFactory
-            .getLogger(ReflectionUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
 
     /**
      * 调用Getter方法.
@@ -49,7 +49,7 @@ public abstract class ReflectionUtils {
      * @return Object
      */
     public static <T> T invokeGetterMethod(Object target, String propertyName) {
-        String getterMethodName = "get" + StringUtils.capitalize(propertyName);
+        String getterMethodName = GET_PREFIX + capitalize(propertyName);
         return (T) invokeMethod(target, getterMethodName, new Class[]{},
                 new Object[]{});
     }
@@ -69,6 +69,7 @@ public abstract class ReflectionUtils {
     /**
      * 调用Setter方法.
      *
+     *
      * @param target    目标对象Object
      * @param value     值
      * @param FieldType 用于查找Setter方法,为空时使用value的Class替代.
@@ -76,7 +77,7 @@ public abstract class ReflectionUtils {
     public static void invokeSetterMethod(Object target, String propertyName,
                                           Object value, Class<?> FieldType) {
         Class<?> type = FieldType != null ? FieldType : value.getClass();
-        String setterMethodName = "set" + StringUtils.capitalize(propertyName);
+        String setterMethodName = SET_PREFIX + capitalize(propertyName);
         invokeMethod(target, setterMethodName, new Class[]{type},
                 new Object[]{value});
     }
@@ -248,7 +249,7 @@ public abstract class ReflectionUtils {
         do {
             Field[] result = sc.getDeclaredFields();
 
-            if (!ArrayUtils.isEmpty(result)) {
+            if (!isEmpty(result)) {
 
                 for (Field field : result) {
                     field.setAccessible(true);
@@ -346,7 +347,7 @@ public abstract class ReflectionUtils {
         do {
             Method[] result = superClass.getDeclaredMethods();
 
-            if (!ArrayUtils.isEmpty(result)) {
+            if (!isEmpty(result)) {
 
                 for (Method method : result) {
                     method.setAccessible(true);
@@ -475,7 +476,7 @@ public abstract class ReflectionUtils {
     public static <T extends Annotation> List<T> getAnnotations(Field[] fields,
                                                                 Class annotationClass) {
 
-        if (ArrayUtils.isEmpty(fields)) {
+        if (null == fields || fields.length == 0) {
             return null;
         }
 
@@ -522,7 +523,7 @@ public abstract class ReflectionUtils {
     public static <T extends Annotation> List<T> getAnnotations(
             Method[] methods, Class annotationClass) {
 
-        if (ArrayUtils.isEmpty(methods)) {
+        if (isEmpty(methods)) {
             return null;
         }
 
@@ -571,7 +572,7 @@ public abstract class ReflectionUtils {
     public static <T extends Annotation> List<T> getAnnotations(
             Constructor[] constructors, Class annotationClass) {
 
-        if (ArrayUtils.isEmpty(constructors)) {
+        if (isEmpty(constructors)) {
             return null;
         }
 
@@ -739,4 +740,7 @@ public abstract class ReflectionUtils {
         return new RuntimeException("Unexpected Checked Exception.", e);
     }
 
+    public static boolean isEmpty(Object[] array) {
+        return array == null || array.length == 0;
+    }
 }

@@ -26,8 +26,8 @@ import java.util.*;
  */
 public class Where extends QueryParams {
     private String first = null;
-    private Map<String, Object[]> wheres = new HashMap<String, Object[]>();
-    protected Map<String, Object> attrs = new HashMap<String, Object>();
+    private Map<String, Object[]> wheres = new LinkedHashMap<String, Object[]>();
+    protected Map<String, Object> attrs = new LinkedHashMap<String, Object>();
     protected List<Object> paras = new ArrayList<Object>();
     protected  String alias = "";
     public Where() {
@@ -173,7 +173,6 @@ public class Where extends QueryParams {
                 sb.append(andOr.toMatchString(prefix, restriction.toMatchString(key)));
                 break;
             case BW:
-                System.out.println(restriction.toMatchString(key));
                 sb.append(andOr.toMatchString(prefix , restriction.toMatchString(key)));
                 Object[] value = (Object[]) objects[0];
                 attrs.put(String.format("%s1", key), value[0]);

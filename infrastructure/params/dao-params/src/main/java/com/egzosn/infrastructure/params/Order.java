@@ -17,6 +17,7 @@
 package com.egzosn.infrastructure.params;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -79,7 +80,7 @@ public class Order extends QueryParams {
     }
 
     protected Order add(String key, OrderAD value, String prefix) {
-        if (null == orders) orders = new HashMap<String, String[]>();
+        if (null == orders) orders = new LinkedHashMap<>();
 
         if (null == value) {
             orders.remove(key);

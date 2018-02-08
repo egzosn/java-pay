@@ -51,6 +51,17 @@ public class SqlFilter {
         return null == str || str.trim().isEmpty();
     }
 
+    public void setPageing(){
+        String page = request.getParameter("page");
+        if (!isBlank( page)){
+            params.setPageIndex(Integer.parseInt(page));
+        }
+        String rows = request.getParameter("rows");
+        if (!isBlank( rows)){
+            params.setPageSize(Integer.parseInt(rows));
+        }
+    }
+
     private void setOrderValue(String prefix) {
         switch (order) {
             case DESC:
@@ -86,7 +97,7 @@ public class SqlFilter {
                     return;
                 }
                 column = s;
-                order = Order.OrderAD.valueOf(o.toUpperCase());
+                order = OrderAD.valueOf(o.toUpperCase());
                 int index = column.indexOf(".");
                 if (index < 1) {
                     setOrderValue(null);
